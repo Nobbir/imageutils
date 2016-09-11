@@ -66,7 +66,7 @@ def listAllImages(root):
 ##                if len(f.split(".")) == 2:
 ##                    if f.split(".")[1].lower() in ["avi", "mov", "mpeg", "mpg"]:
 ##                        video_count += 1
-##                        #print(file_path)
+##                        
                 
                 # check whether it's an image
                 try:
