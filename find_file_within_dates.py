@@ -1,9 +1,9 @@
 import filecmp
 import os #.path,
 import time
-from dateutil import parser
+#from dateutil import parser
 from datetime import datetime
-import pytz
+#import pytz
 from PIL import Image
 from PIL.ExifTags import TAGS
 import sys
@@ -41,8 +41,8 @@ f1 = r"C:\Interests\ImagePhotoshop\pohela.jpg"
 
 class ImageObject():
     
-    self.file_hash = None
-    self.im_name = None
+    #self.file_hash = None
+    #self.im_name = None
     
     def __init__(self):
         print("Yes")
@@ -99,7 +99,6 @@ for root, folders, files in os.walk(location):
 ##    start = datetime(2014, 4, 4, 0, 1, 11) #, tzinfo=pacific)  # type = datetime.datetime
 ##    end = datetime(2014, 4, 24, 0, 1, 11) #, tzinfo=pacific)  # type = datetime.datetime    
 ##
-##    createtime = datetime.fromtimestamp(os.path.getctime(file1)) #, pacific)    # type = datetime.datetime
 ##    modifiedtime = datetime.fromtimestamp(os.path.getmtime(file1)) #, pacific)  # type = datetime.datetime
 ##    if modifiedtime < start or modifiedtime > end:
 ##        print("Not within range!")
@@ -171,3 +170,6 @@ for root, folders, files in os.walk(location):
 ####### returns datetime.datetime object - use +, -, >, < operators on it
 ######print(type(parser.parse(time.ctime(os.path.getctime(file)))))
 ##
+
+if __name__ == "__main__":
+    pass
