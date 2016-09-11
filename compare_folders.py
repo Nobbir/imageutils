@@ -5,12 +5,6 @@ root1 = r'F:\MyPython\CompareOrganizeImage'
 root2 = r'C:\MyPython\CompareOrganizeImage'
 
 import os
-
-def fileExists(f1, f2):
-    if os.path.exists(f1):
-        print(f1)
-    if os.path.exists(f2):
-        print(f2)
     
 for dirs1, folders1, files1 in os.walk(root1):
     
@@ -27,7 +21,8 @@ for dirs1, folders1, files1 in os.walk(root1):
                 if not os.path.exists(f2): continue
                 
                 if file1 == file2:  # files have same name
-                    
+
+                    # ignore *.db files
                     if file1 == 'Thumbs.db' and file2 == 'Thumbs.db': 
                         continue
                     else:   
