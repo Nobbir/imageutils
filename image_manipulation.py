@@ -52,6 +52,6 @@ if __name__ == '__main__':
         enhancer = ImageEnhance.Contrast(image)
         enhancer = ImageEnhance.Color(image)
         im = enhancer.enhance(0.5)
-        im.show()
+        enhancer.save("L")
     except:
         print("Not an image")
