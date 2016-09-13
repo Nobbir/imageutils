@@ -49,19 +49,22 @@ def saveImageAsGrayscale(image):
     except Exception as ex:
         print(ex.args[0])
     
+## timeit.timeit example
+#def test():
+    #"""Stupid test function"""
+    #L = []
+    #for i in range(100):
+        #L.append(i)
+
+#if __name__ == '__main__':
+    #import timeit
+    #print(timeit.timeit("test()", setup="from __main__ import test"))
+    
+    
 if __name__ == '__main__':
 
     image_path = os.path.join(os.getcwd(), "rubyct.JPG")
 
-    #try:
-        #with Image.open(image_path) as im:
-            #print("{}, {}, {}, {}".format(image_path, im.format, im.size, im.mode))
-    #except:
-        #print("...................")
-
-    ##im1= Image.open(image_path)
-    ##im1.thumbnail(size, Image.ANTIALIAS)
-    ##im1.save(thumbnail_name, 'JPEG')
     try:
         with Image.open(image_path) as image:
             #print(image.info())
