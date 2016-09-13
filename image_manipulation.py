@@ -11,10 +11,9 @@ def image_difference(im1, im2):
     out = abs(image1, image2)  # returns an image ...
     return out
 
-print("stop")
 
 def saveImageAsGrayscale(image):
-    image.save("L")
+    image.save("L")   # wrong- provide a path
         
 #try:
     ##filename, ext = os.path.splitext(imfile1)
@@ -47,9 +46,15 @@ if __name__ == '__main__':
     
     try:
         image = Image.open(sample_image)
-        enhancer = ImageEnhance.Contrast(image)
-        enhancer = ImageEnhance.Color(image)
-        im = enhancer.enhance(0.5)
-        enhancer.save("L")
+##        enhancer = ImageEnhance.Contrast(image)
+##        enhancer = ImageEnhance.Color(image)
+##        im = enhancer.enhance(0.5)
+##        im.save("adfasdfad.jpg")
+        
+        im2 = image.copy()
+        #im2.convert("L").save("grayscale2.jpg")
+        width, height = im2.size
+        small = im2.resize((width/100, height/100))
+        small.save("small.jpg")
     except:
         print("Not an image")
