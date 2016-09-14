@@ -54,6 +54,21 @@ def ImageChops():
         
     except Exception as ex:
         print(ex.args[0])
+
+def ImageResize(image_path):
+
+    image_path = "rubyct.JPG"
+    
+    try:
+        with Image.open(image_path) as image:
+            im2 = image.copy()
+            #im2.convert("L").save("grayscale2.jpg")
+            width, height = im2.size
+            small = im2.resize((width/100, height/100))
+            small.save("small.jpg")
+            
+    except Exception as ex:
+        print(ex.args[0])
     
 #############################################################
 ## timeit.timeit example
@@ -76,4 +91,5 @@ if __name__ == '__main__':
 
     #SaveImageAsThumnail(image_path)
     
-    saveImageAsGrayscale(image_path)
+    #saveImageAsGrayscale(image_path)
+    ImageResize(image_path)
