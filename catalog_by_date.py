@@ -12,6 +12,12 @@ from PIL import ImageChops
 from PIL import Image
 from PIL import ImageStat
 
+"""
+datetime.fromtimestamp(time_stamp)  -- example return: datetime.datetime(2016, 8, 3, 9, 56, 52, 43531)
+os.path.getmtime() and getctime returns a double (timestamp) which can be converted to a datetime object as
+
+exif date time is returned as a string: '2016:08:01 22:12:20' - this is converted to a datetime object with custom code?
+"""
 # check these 3 time stamps - 
 # if the key1 is not in exif then check key2 and so on
 # 1: ('DateTimeOriginal', '2016:08:01 22:12:20')
@@ -45,17 +51,6 @@ def parseDateTime(dt_string):
     second = int(t[2].strip())
     
     return [year, month, day, hour, minute, second]
-
-
-def testListEquality(list1, list2):
-    
-    if len(list1) == len(list2):
-        for i, item in enumerate(list1):
-            if item > list2[i]:
-                return False
-        return True
-    else:
-        print("Two lists are not equal")  # raise exception?
         
 
 def getExif(img_path):
@@ -104,6 +99,8 @@ for root, folders, files in os.walk(location):
             file_path = os.path.join(root, file1)
             im = Image.open(file_path)
  
+            # fromtimestamp method requres a 'float' as input
+            # os.path.getmtime returns a float - also, getctime returns a float
             modifiedtime = datetime.fromtimestamp(os.path.getmtime(file_path)) 
             
             y, m, d = modifiedtime.year, modifiedtime.month, modifiedtime.day
