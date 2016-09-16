@@ -19,6 +19,7 @@ exif_keys = ['LightSource', 'YResolution', 'ResolutionUnit', 'FlashPixVersion',
              'MaxApertureValue', 'ExifInteroperabilityOffset', 'CFAPattern',
              'Sharpness', 'GainControl', 'YCbCrPositioning', 'DigitalZoomRatio',
              'ExifVersion']
+
 # an image is provided
 def getExif(img):
     ret = {}
@@ -32,12 +33,12 @@ def getExif(img):
 def get_exif(img_path):
     ret = {}
     try:
-        iv = Image.open(img_path)
-        info = iv._getexif()
-        for tag, value in info.items():
-            decoded = TAGS.get(tag, value)
-            ret[decoded] = value
-        return ret
+        with Image.open(img_path) as iv:
+            info = iv._getexif()
+            for tag, value in info.items():
+                decoded = TAGS.get(tag, value)
+                ret[decoded] = value
+            return ret
     except Exception as ex:
         print("Image {} does not have any exif".format(img_path))
         # use os.stat(image_path) to get time info
@@ -85,7 +86,7 @@ def listAllImages(root):
         #root = r"C:\temp"
         image_count = 0
         video_count = 0
-        
+        makes = []
         for root_folder, folders, files in os.walk(root):
             
             for f in files:
@@ -94,7 +95,7 @@ def listAllImages(root):
                        
                 ext = os.path.splitext(file_path)[1].lower()
                 
-                if ext in [".nef", ".db"]:
+                if ext in [".nef", ".db", ".psd", ".modd", ".moff", ".thm"]:
                     continue
                 
                 if ext in [".avi", ".mov", ".mpeg", ".mpg", ".mp4"]:
@@ -114,13 +115,16 @@ def listAllImages(root):
                         date_time_org = ConvertTimestampToDateTime(exif['DateTimeOriginal'])
                         date_time_taken = ConvertTimestampToDateTime(exif['DateTime'])   # this is the one work FIRST
                         camera = exif['Make']
-                        print("DateTaken - {} and Make - {}".format(exif['DateTime'], exif['Make']))
+                        if camera not in makes:
+                            print(camera)
+                            makes.append(camera)
+                        #print("DateTaken - {} and Make - {}".format(exif['DateTime'], exif['Make']))
                     else:
                         # look for os.stat time information
                         modifiedtime = datetime.fromtimestamp(os.path.getmtime(file_path))   # returns a time string 
                         if modifiedtime:
                             image_count += 1
-                            print("Modified time: ", modifiedtime.year, modifiedtime.month, modifiedtime.day)
+                            #print("Modified time: ", modifiedtime.year, modifiedtime.month, modifiedtime.day)
                         else:
                             print("{} has no timestamp")
                             
@@ -128,14 +132,14 @@ def listAllImages(root):
                     
                     if ext in [".jpg", ".jpeg", ".png"]:
                         modifiedtime = datetime.fromtimestamp(os.path.getmtime(file_path))   # returns a DateTime object
-                        print("{}: {}".format(file_path, modifiedtime))
+                        #print("{}: {}".format(file_path, modifiedtime))
                     else:
                         print("NOT AN IMAGE: {}".format(file_path))
                         
                 except Exception as ex:
                     print(ex.args[0])
 
-
+        print(makes)
     except Exception as ex:
         print(ex.args[0])
         
@@ -162,7 +166,10 @@ if __name__ == '__main__':
     root = r"C:\Users\farnf\Pictures\2016-07"
     root = r"D:\DCIM\101_FUJI"
     root = r"C:\Users\nobi4775\Pictures\NikonD60_2"
-    
+    root = r"C:\Users\nobi4775\Pictures"
+    root = r"C:\Users\farnf\OneDrive\Pictures"
+    root = r"C:\Users\farnf\Pictures"
+    root = r"F:\Pictures"
     listAllImages(root)
 
 
