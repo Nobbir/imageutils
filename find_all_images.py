@@ -80,13 +80,14 @@ def ConvertTimestampToDateTime(date_str): # e.g., '2010:07:14 20:43:00'
 
 
 def listAllImages(root):
-    
+
+    makes = []
     try:
         #root = r"G:\Pictures" #\house_redlands\verona drive"
         #root = r"C:\temp"
         image_count = 0
         video_count = 0
-        makes = []
+        
         for root_folder, folders, files in os.walk(root):
             
             for f in files:
@@ -95,7 +96,7 @@ def listAllImages(root):
                        
                 ext = os.path.splitext(file_path)[1].lower()
                 
-                if ext in [".nef", ".db", ".psd", ".modd", ".moff", ".thm"]:
+                if ext in [".nef", ".db", ".psd", ".modd", ".moff", ".thm", ".py", ".lnk"]:
                     continue
                 
                 if ext in [".avi", ".mov", ".mpeg", ".mpg", ".mp4"]:
@@ -116,7 +117,7 @@ def listAllImages(root):
                         date_time_taken = ConvertTimestampToDateTime(exif['DateTime'])   # this is the one work FIRST
                         camera = exif['Make']
                         if camera not in makes:
-                            print(camera)
+                            #print(camera)
                             makes.append(camera)
                         #print("DateTaken - {} and Make - {}".format(exif['DateTime'], exif['Make']))
                     else:
