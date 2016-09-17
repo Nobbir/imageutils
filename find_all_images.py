@@ -5,10 +5,11 @@ from datetime import datetime
 from PIL import Image
 from PIL.ExifTags import TAGS
 
+#'FocalLengthIn35mmFilm'
 exif_keys = ['LightSource', 'YResolution', 'ResolutionUnit', 'FlashPixVersion',
              'Make', 'Flash', 'SceneCaptureType', 'DateTime', 'MeteringMode',
              'XResolution', 'Contrast', 'Saturation', 'MakerNote', 'ExposureProgram',
-             'FocalLengthIn35mmFilm', 'ColorSpace', 'ExifImageWidth',
+             'ColorSpace', 'ExifImageWidth',
              'ExposureBiasValue', 'DateTimeOriginal', 'UserComment',
              'SceneType', 'Software', 'SubjectDistanceRange', 'WhiteBalance',
              'CompressedBitsPerPixel', 'DateTimeDigitized', 'SensingMethod',
@@ -19,6 +20,7 @@ exif_keys = ['LightSource', 'YResolution', 'ResolutionUnit', 'FlashPixVersion',
              'MaxApertureValue', 'ExifInteroperabilityOffset', 'CFAPattern',
              'Sharpness', 'GainControl', 'YCbCrPositioning', 'DigitalZoomRatio',
              'ExifVersion']
+
         
 # simplified names of Cameras
 camera_dict = {u'Apple': 'iPhone', u'EASTMAN KODAK COMPANY': 'Kodak', u'NIKON CORPORATION': 'Nikon', 
@@ -75,11 +77,23 @@ def get_exif(img_path):
             for tag, value in info.items():
                 decoded = TAGS.get(tag, value)
                 ret[decoded] = value
-        return ret
+        return ret, iv
     except Exception as ex:
         #print("Image {} does not have any exif".format(img_path))
         ## use os.stat(image_path) to get time info
         return
+
+test = r"C:\Users\farnf\Pictures\2016-06\DSC_0002.JPG"
+modifiedtime = datetime.fromtimestamp(os.path.getmtime(test))   #datetime object
+print(type(modifiedtime))
+exifs, im = get_exif(test)
+
+##for k, v in exifs.items():
+##    print("{}:        {}".format(k, v))
+
+print(im.size)
+
+sys.exit(0)
 
 def listAllImages(root):
 
@@ -122,7 +136,8 @@ def listAllImages(root):
                     exif_count += 1
                     date_time_org = ConvertTimestampToDateTime(exif['DateTimeOriginal'])
                     date_time_taken = ConvertTimestampToDateTime(exif['DateTime'])   # this is the one work FIRST
-                    camera = camera_dict[exif['Make']]
+                    camera = camera_dict[exif['Make']]    # ExifImageWidth, ExifImageHeight
+                    #camera_model = camera_dict[exif['Model']]  # e.g., Nikon D60
                     # u'Apple', u'EASTMAN KODAK COMPANY', u'NIKON CORPORATION', u'Nokia', u'PENTAX', u'SONY', u'Panasonic', u'Canon', u'LGE'
                     if not camera in cameras:
                         cameras.append(camera)
@@ -177,8 +192,9 @@ if __name__ == '__main__':
     root = r"D:\DCIM\101_FUJI"
     root = r"C:\Users\nobi4775\Pictures\NikonD60_2"
     root = r"C:\Users\nobi4775\Pictures"
+    root = r"C:\Users\farnf\Pictures"
     
-    listAllImages(root)
+    listAllImages(r"C:\temp")
 
 
 ####dir_cmp = filecmp.dircmp(root1, root2)
