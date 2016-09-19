@@ -104,7 +104,8 @@ def listAllImages(root):
                 if ext in [".jpg", ".jpeg", ".png"]:  # these are images without Exif info
                     non_exif_count += 1
                     modifiedtime = datetime.fromtimestamp(os.path.getmtime(file_path))   # returns a DateTime object
-                    print("NOT exif {}".format((type(modifiedtime))))
+                    #print("NOT exif {}".format((type(modifiedtime))))
+                    images_dict[file_path] = modifiedtime
                 else:
                     print("NOT AN IMAGE: {}".format(file_path))
                     #print(ex.args[0])
@@ -113,12 +114,13 @@ def listAllImages(root):
     c = collections.Counter(x)
     mc = c.most_common()
     for m in mc:
-        print(m)
+        if m[1] > 1:
+            print(m[1])
         
-    print("************************************************************")
-    ordered_dict = collections.OrderedDict(sorted(images_dict.items()))
-    for k, v in ordered_dict.items():
-        print("{} : {}".format(k, v))
+    #print("************************************************************")
+    #ordered_dict = collections.OrderedDict(sorted(images_dict.items()))
+    #for k, v in ordered_dict.items():
+        #print("{} : {}".format(k, v))
 
 
         
@@ -161,6 +163,6 @@ if __name__ == '__main__':
     root = r"C:\Users\nobi4775\Pictures\NikonD60_2"
     root = r"C:\Users\nobi4775\Pictures"
     root = r"C:\Users\farnf\Pictures"
-    
-    listAllImages(twok_07)
+    root = r"C:\Users\nobi4775\Pictures\NikonD60_2"
+    listAllImages(root)
 
