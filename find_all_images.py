@@ -96,7 +96,13 @@ def listAllImages(root):
                     date_time_org = datetime.strptime(exif['DateTimeOriginal'], "%Y:%m:%d %H:%M:%S")
                     date_time_taken = datetime.strptime(exif['DateTime'], "%Y:%m:%d %H:%M:%S")
                     #print("Exif {}".format(type(date_time_taken)))
-                    images_dict[file_path] = date_time_taken
+                    #images_dict[file_path] = date_time_taken
+                    if not images_dict.keys():
+                        images_dict[modifiedtime] = [file_path]                    
+                    if date_time_taken in images_dict.keys:
+                        images_dict[date_time_taken].append(file_path)
+                    else:
+                        images_dict[date_time_taken] = [file_path]                    
                     exif_count += 1
                         
             except Exception as ex:
@@ -105,18 +111,32 @@ def listAllImages(root):
                     non_exif_count += 1
                     modifiedtime = datetime.fromtimestamp(os.path.getmtime(file_path))   # returns a DateTime object
                     #print("NOT exif {}".format((type(modifiedtime))))
-                    images_dict[file_path] = modifiedtime
+                    #images_dict[file_path] = modifiedtime
+                    if modifiedtime in images_dict.keys():
+                        images_dict[modifiedtime].append(file_path)
+                    else:
+                        images_dict[modifiedtime] = [file_path]
                 else:
                     print("NOT AN IMAGE: {}".format(file_path))
                     #print(ex.args[0])
 
-    x = sorted(images_dict.values()) #(images_dict.items())
-    c = collections.Counter(x)
-    mc = c.most_common()
-    for m in mc:
-        if m[1] > 1:
-            print(m[1])
+    #x = sorted(images_dict.values()) #(images_dict.items())
+    #c = collections.Counter(x)
+    #mc = c.most_common()
+    #for m in mc:
+        #if m[1] > 1:
+            #print(m[1])
         
+    # New way dictionary - datetime as key of the dict
+    #for item in images_dict.items():   # prints both key and vals
+    for k, vals in images_dict.items():
+        if len(vals) > 2:
+            print(vals)
+            for val in vals:
+                fname = os.path.basename(val)
+                im = Image.open(val)
+                im.save(r"C:\temp\imageutilstest\{}".format(fname), "JPEG")
+
     #print("************************************************************")
     #ordered_dict = collections.OrderedDict(sorted(images_dict.items()))
     #for k, v in ordered_dict.items():
