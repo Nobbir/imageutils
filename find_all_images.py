@@ -109,11 +109,26 @@ def listAllImages(root):
                     print("NOT AN IMAGE: {}".format(file_path))
                     #print(ex.args[0])
 
+    x = sorted(images_dict.values()) #(images_dict.items())
+    c = collections.Counter(x)
+    mc = c.most_common()
+    for m in mc:
+        print(m)
+        
+    print("************************************************************")
     ordered_dict = collections.OrderedDict(sorted(images_dict.items()))
     for k, v in ordered_dict.items():
         print("{} : {}".format(k, v))
 
+
         
+    """
+    >>> x
+    [5, 2, 1, 2, 9, 7, 2, 5, 8, 6, 3, 5]
+    >>> v = collections.Counter(x)
+    >>> v
+    Counter({2: 3, 5: 3, 1: 1, 3: 1, 6: 1, 7: 1, 8: 1, 9: 1})
+    """  
 ##    for k, v in images_dict.items():
 ##        print("{} : {}".format(k, v))
 ##    print(cameras)
