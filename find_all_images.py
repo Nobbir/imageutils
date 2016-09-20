@@ -129,6 +129,7 @@ def listAllImages(root):
         
     # New way dictionary - datetime as key of the dict
     #for item in images_dict.items():   # prints both key and vals
+    f = open(os.path.join(os.getcwd(), "dups.txt"), "w")
     dups = 0
     for k, vals in images_dict.items():
         if len(vals) > 2:
@@ -141,7 +142,9 @@ def listAllImages(root):
                 new_fname = name1 + "_{}.".format(i) + ext
                 #im.save(r"C:\temp\imagetest\{}_{}.{}".format(name1, i, ext), "JPEG")
                 #print(os.path.join(r"C:\temp\imagetest", new_fname))
+                f.write(val + "\n")
                 im.save(os.path.join(r"C:\temp\imagetest", new_fname))
+    f.close()
     
     #print("************************************************************")
     #ordered_dict = collections.OrderedDict(sorted(images_dict.items()))
