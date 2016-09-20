@@ -140,8 +140,9 @@ def listAllImages(root):
                 ext = fname.split(".")[1]
                 new_fname = name1 + "_{}.".format(i) + ext
                 #im.save(r"C:\temp\imagetest\{}_{}.{}".format(name1, i, ext), "JPEG")
-                im.save(os.path.join(r"C:\temp\imagetest" + new_fname))
-                
+                #print(os.path.join(r"C:\temp\imagetest", new_fname))
+                im.save(os.path.join(r"C:\temp\imagetest", new_fname))
+    
     #print("************************************************************")
     #ordered_dict = collections.OrderedDict(sorted(images_dict.items()))
     #for k, v in ordered_dict.items():
