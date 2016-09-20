@@ -129,14 +129,19 @@ def listAllImages(root):
         
     # New way dictionary - datetime as key of the dict
     #for item in images_dict.items():   # prints both key and vals
+    dups = 0
     for k, vals in images_dict.items():
         if len(vals) > 2:
-            print(vals)
-            for val in vals:
-                fname = os.path.basename(val)
+            dups += len(vals) - 1
+            for i, val in enumerate(vals):
                 im = Image.open(val)
-                im.save(r"C:\temp\imageutilstest\{}".format(fname), "JPEG")
-
+                fname = os.path.basename(val)
+                name1 = fname.split(".")[0]
+                ext = fname.split(".")[1]
+                new_fname = name1 + "_{}.".format(i) + ext
+                #im.save(r"C:\temp\imagetest\{}_{}.{}".format(name1, i, ext), "JPEG")
+                im.save(os.path.join(r"C:\temp\imagetest" + new_fname))
+                
     #print("************************************************************")
     #ordered_dict = collections.OrderedDict(sorted(images_dict.items()))
     #for k, v in ordered_dict.items():
