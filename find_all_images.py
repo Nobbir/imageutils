@@ -71,7 +71,7 @@ def listAllImages(root):
             
             file_path = os.path.join(root_folder, f)   # f is file name, e.g., AM234.jpg
             ext = os.path.splitext(file_path)[1].lower()
-            
+            #print(file_path)
             if ext in [".nef", ".db", ".psd", ".modd", ".moff", ".thm", ".py", ".lnk"]:
                 continue
             
@@ -132,18 +132,23 @@ def listAllImages(root):
     f = open(os.path.join(os.getcwd(), "dups.txt"), "w")
     dups = 0
     for k, vals in images_dict.items():
-        if len(vals) > 2:
+        #print(vals)
+        if len(vals) > 1:   # 2, 3, 4, 5 ...
             dups += len(vals) - 1
             for i, val in enumerate(vals):
-                im = Image.open(val)
-                fname = os.path.basename(val)
-                name1 = fname.split(".")[0]
-                ext = fname.split(".")[1]
-                new_fname = name1 + "_{}.".format(i) + ext
-                #im.save(r"C:\temp\imagetest\{}_{}.{}".format(name1, i, ext), "JPEG")
-                #print(os.path.join(r"C:\temp\imagetest", new_fname))
-                f.write(val + "\n")
-                im.save(os.path.join(r"C:\temp\imagetest", new_fname))
+                if i == 0: continue
+                try:
+                    im = Image.open(val)
+                    fname = os.path.basename(val)
+                    name1 = fname.split(".")[0]
+                    ext = fname.split(".")[1]
+                    new_fname = name1 + "_{}.".format(i) + ext
+                    #im.save(r"C:\temp\imagetest\{}_{}.{}".format(name1, i, ext), "JPEG")
+                    #print(os.path.join(r"C:\temp\imagetest", new_fname))
+                    f.write(val + "\n")
+                    im.save(os.path.join(r"C:\temp\imagetest", new_fname))
+                except:
+                    pass
     f.close()
     
     #print("************************************************************")
@@ -193,5 +198,5 @@ if __name__ == '__main__':
     root = r"C:\Users\nobi4775\Pictures"
     root = r"C:\Users\farnf\Pictures"
     root = r"C:\Users\nobi4775\Pictures\NikonD60_2"
-    listAllImages(root)
+    listAllImages(r"C:\Users\farnf\Pictures\2016-06")
 
