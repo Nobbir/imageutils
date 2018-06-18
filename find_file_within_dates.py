@@ -3,7 +3,7 @@ import os #.path,
 import time
 #from dateutil import parser
 from datetime import datetime
-#import pytz
+import pytz
 from PIL import Image
 from PIL.ExifTags import TAGS
 import sys
@@ -53,26 +53,32 @@ x = ImageObject()
 # 
 def findWithinTimePeriods(file1):
 
-    # modified time is EARLIER
-    pacific = pytz.timezone('US/Pacific')
-
-##    # range of time to look for
-##    start = datetime(2014, 4, 4, 0, 1, 11) #, tzinfo=pacific)  # type = datetime.datetime
-##    end = datetime(2014, 4, 24, 0, 1, 11) #, tzinfo=pacific)  # type = datetime.datetime
+    ##    # range of time to look for
+    ##    start = datetime(2014, 4, 4, 0, 1, 11) #, tzinfo=pacific)  # type = datetime.datetime
+    ##    end = datetime(2014, 4, 24, 0, 1, 11) #, tzinfo=pacific)  # type = datetime.datetime
     year = 2014
     month = 4
     startday = 4
     endday = 24
+        
+    try:
+        # modified time is EARLIER
+        pacific = pytz.timezone('US/Pacific')
+        
+        #createdtime = datetime.fromtimestamp(os.path.getctime(file1)) #, pacific)    # type = datetime.datetime
+        modifiedtime = datetime.fromtimestamp(os.path.getmtime(file1)) #, pacific)  # type = datetime.datetime
     
-    createdtime = datetime.fromtimestamp(os.path.getctime(file1)) #, pacific)    # type = datetime.datetime
-    modifiedtime = datetime.fromtimestamp(os.path.getmtime(file1)) #, pacific)  # type = datetime.datetime
-
-    if modifiedtime.year == 2015:
-        if modifiedtime.month == 4: #< 6 and modified.month > 2:
-            print(file1)
+        #print(modifiedtime)
+        if modifiedtime.year < 2015 and modifiedtime.year > 2013:
+            if modifiedtime.month < 4: #< 6 and modified.month > 2:
+                print(os.path.split(file1)[1])
+                
+    except Exception as ex:
+        print(ex.args[0])
 
 
 location = r"C:\Users\nobi4775\Pictures"
+location = r'C:\Users\nobi4775\Documents\GitHub\AllImageScripts\CompareOrganizeImage1\Mobile Phones\GooglePhonePictures\Feb2013_Feb2014'
 
 i = 0
 for root, folders, files in os.walk(location):
@@ -81,11 +87,12 @@ for root, folders, files in os.walk(location):
         
         try:
             f = os.path.join(root, file)
-            im = Image.open(f)
+            im = Image.open(f)  # this line verifies the file is an image file.
             findWithinTimePeriods(f)
             
         except Exception as ex:
-            pass
+            print("{} is not an image")
+            print(ex.args[0])
 
 
 

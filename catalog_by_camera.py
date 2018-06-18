@@ -54,8 +54,7 @@ for root, subfolder, files in os.walk(r'C:\Users\nobi4775\Pictures'):
                     pass #print("{},{},{}\n".format(file_name, d['Make'], d['DateTimeOriginal']))
             else:
                 # there is no exif for this file
-                #print(file_name)
-                logfile.write("{}\n".format(file_name))
+                logfile.write("{} - no exif data for this file\n".format(file_name))
             
         except Exception as ex:
             pass
