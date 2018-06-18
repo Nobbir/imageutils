@@ -1,3 +1,9 @@
+import cv2
+
+
+
+# END OPENCV2
+#
 import filecmp
 import os #.path,
 import time
