@@ -1,5 +1,9 @@
 import cv2
 
+#from skimage.measure import structural_similarity as ssim
+from skimage import measure
+
+
 
 
 # END OPENCV2
@@ -45,15 +49,15 @@ f1 = r"C:\Interests\ImagePhotoshop\pohela.jpg"
 ##print(d.second)
 
 
-class ImageObject():
+#class ImageObject():
     
-    #self.file_hash = None
-    #self.im_name = None
+    ##self.file_hash = None
+    ##self.im_name = None
     
-    def __init__(self):
-        print("Yes")
+    #def __init__(self):
+        #print("Yes")
 
-x = ImageObject()
+#x = ImageObject()
 
 # timeperiod1, timeperiod2, file1
 # 
@@ -83,106 +87,95 @@ def findWithinTimePeriods(file1):
         print(ex.args[0])
 
 
-location = r"C:\Users\nobi4775\Pictures"
-location = r'C:\Users\nobi4775\Documents\GitHub\AllImageScripts\CompareOrganizeImage1\Mobile Phones\GooglePhonePictures\Feb2013_Feb2014'
 
-i = 0
-for root, folders, files in os.walk(location):
-
-    for file in files:
-        
-        try:
-            f = os.path.join(root, file)
-            im = Image.open(f)  # this line verifies the file is an image file.
-            findWithinTimePeriods(f)
-            
-        except Exception as ex:
-            print("{} is not an image")
-            print(ex.args[0])
+from PIL import ImageChops
+import math
+import operator
+from functools import reduce
 
 
+def getImageSimilarity(img1, img2):
+    bbox = ImageChops.difference(img1, img2).getbbox()
+    print(bbox[2])
 
-##
-##def findWithinTimePeriods(file1):
-##
-##    # modified time is EARLIER
-##    pacific = pytz.timezone('US/Pacific')
-##
-##    # range of time to look for
-##    start = datetime(2014, 4, 4, 0, 1, 11) #, tzinfo=pacific)  # type = datetime.datetime
-##    end = datetime(2014, 4, 24, 0, 1, 11) #, tzinfo=pacific)  # type = datetime.datetime    
-##
-##    modifiedtime = datetime.fromtimestamp(os.path.getmtime(file1)) #, pacific)  # type = datetime.datetime
-##    if modifiedtime < start or modifiedtime > end:
-##        print("Not within range!")
-##        return
-##
-##    if modifiedtime > start and modifiedtime < end:
-##        print(modifiedtime)
-##        print("Got it!")
-##    else:
-##        print(start)
-##        print(modifiedtime)
-##        print(end)
-##        print("out of bound")
-##
-##        
-##x = findWithinTimePeriods(r"C:\Interests\ImagePhotoshop\pohela.jpg")
+def getRMSdiff(img1, img2):
     
-##file = r"C:\messages.xml"
-##
-##
-##
-### range of time to look for
-##apr04 = datetime(2015, 4, 4, 0, 0, 0)  # type = datetime.datetime
-##apr24 = datetime(2015, 4, 24, 0, 0, 0)  # type = datetime.datetime
-##print(apr24 - apr04)
-##print(apr24 > apr04)
-##
-####diff = apr04 - apr24 # type = datetime.timedelta
-### diff - timedelta
-##
-##createtime = os.path.getctime(file)  # type = 'float'
-##modifiedtime = os.path.getmtime(file)  # type = 'float'
-##
-##datetime.fromtimestamp(createtime)  # type = datetime.datetime created from float
-##datetime.fromtimestamp(modifiedtime)     # type = datetime.datetime created from float
-##
-##
-####create1 = time.ctime(os.path.getctime(file))  # type = 'str'
-####print(datetime.fromtimestamp(create0))  # passing 'float' succeeds
-####print(datetime.fromtimestamp(create1))  # passing 'str' causes failure
-##
-######d = datetime(time.ctime(os.path.getctime(file)))
-######print(type(d))
-####
-####created = time.ctime(os.path.getctime(file))
-####
-####print(created > later)
-####
-######+t1	Returns a timedelta object with the same value. (2)
-######-t1	equivalent to timedelta(-t1.days, -t1.seconds, -t1.microseconds), and to t1* -1. (1)(4)
-####
-####print(type(os.path.getctime(file)))  # this returns a float!!!
-####print(os.path.getctime(file))  # returns float
-####print(os.path.getmtime(file))  # returns float
-####
-##### returns: created: Wed Oct 21 14:02:30 2015
-####created = time.ctime(os.path.getctime(file))
-####
-##### returns: last modified: Fri Mar  4 09:46:28 2016
-####modified = time.ctime(os.path.getmtime(file))
-####
-####print(type(os.path.getmtime(file)))
-####print(created > modified)
-####
-####print(type(datetime.now()))
-####now = datetime.now()
-####print(now > modified)
-####
-####### returns datetime.datetime object - use +, -, >, < operators on it
-######print(type(parser.parse(time.ctime(os.path.getctime(file)))))
-##
+    h = ImageChops.difference(img1, img2).histogram()
+    
+    rms = math.sqrt(reduce(operator.add,
+                           map(lambda h, i:h*(i**2), h, range(256))
+                           ) / (float(img1.size[0]) * img1.size[1]))
+    return rms
+    
+location = r"C:\Users\nobi4775\Pictures"
+location = r'C:\Users\nobi4775\Documents\GitHub\AllImageScripts\CompareOrganizeImage1\Mobile Phones\GooglePhonePictures\Feb2013_Feb2014\duplidate_test'
+
+def create_img_array():
+    
+    img_list = []
+    
+    for root, folders, files in os.walk(location):
+        
+        for infile in files:
+            
+            file_name = infile.split(".")[0]
+            
+            f = os.path.join(root, infile)
+            try:
+                im = Image.open(f)
+                img_list.append((file_name, im))
+            except:
+                pass
+            
+    return img_list
+
+img_arr_1 = create_img_array()
+img_arr_2 = create_img_array()
+
+for i, img in enumerate(img_arr_1):
+    
+    rms = None
+    
+    remainders = img_arr_1[i+1:]
+    
+    # now compare img with the rest of the images
+    for rm in remainders:
+        
+        #getImageSimilarity(img, rm)
+        ## compare img and rm
+        #if getImageSimilarity(img, rm) is None:
+            #print("Nothing .................")
+        #else:
+            #print("Something ............")
+        rms = getRMSdiff(img[1], rm[1])
+        print("{}\t:{}\t{}".format(rms, img[0], rm[0]))
+    #print("{}\t{}".format(i, img))
+    
+#i = WORKING WORKING WORKING ....
+#for root, folders, files in os.walk(location):
+
+    #for infile in files:
+        
+        #size = 128, 128  # shouldn't be of same proportion????
+        
+        #try:
+            #f = os.path.join(root, infile)
+            #file, ext = os.path.splitext(infile)
+            #im = Image.open(f)  # this line verifies the file is an image file.
+            #gray_im = im.convert("L")
+            #gray_im.thumbnail(size)
+            ##gray_im.show()
+            #gray_im.save(os.path.join(root, "thumbnails", file) + ".png", "JPEG")
+            ##findWithinTimePeriods(f)
+            
+        #except Exception as ex:
+            #print("{} is not an image")
+            #print(ex.args[0])
+
+
+
+
+
 
 if __name__ == "__main__":
     pass
