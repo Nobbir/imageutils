@@ -80,12 +80,14 @@ def get_exif(img_path):
     """
     ret = {}
     try:
-        iv = Image.open(img_path)
-        info = iv._getexif()
-        for tag, value in info.items():
-            decoded = TAGS.get(tag, value)
-            ret[decoded] = value
-        return ret
+        with Image.open(img_path) as iv:
+            #iv = Image.open(img_path)
+            info = iv._getexif()
+            if not info: "Handle the situation ??????"
+            for tag, value in info.items():
+                decoded = TAGS.get(tag, value)
+                ret[decoded] = value
+            return ret, iv
 
     except Exception as ex:
         print("{} does not have any exif".format(img_path))

@@ -15,22 +15,6 @@ def ValidateImageName(image_name):
         return True
 
 
-# image path is provided
-def get_exif(img_path):
-    ret = {}
-    try:
-        with Image.open(img_path) as iv:
-            info = iv._getexif()
-            if not info: "Info is not ??????"
-            for tag, value in info.items():
-                decoded = TAGS.get(tag, value)
-                ret[decoded] = value
-        return ret, iv
-    except Exception as ex:
-        print("Image {} does not have any exif".format(img_path))
-        return  # None
-
-
 #img = r"C:\Users\farnf\Pictures\2016-06\DSC_0002xx.JPG"
 
 def listAllImages(root):
