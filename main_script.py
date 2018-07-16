@@ -7,12 +7,7 @@ import os
 from PIL import ImageChops
 from PIL import Image
 from PIL import ImageStat
-    
-    
-exif_tags = ['CompressedBitsPerPixel', 'DateTimeOriginal', 'DateTimeDigitized', 'MaxApertureValue', 'MeteringMode',
-             'LightSource', 'FocalLength', 'ExifImageWidth', 'Make', 'Model', 'SubsecTimeOriginal', 'Orientation',
-             'YCbCrPositioning', 'SensingMethod', 'XResolution', 'YResolution', 'ExposureTime', 'ISOSpeedRatings',
-             'FNumber', 'DateTime', 'ExifImageHeight']
+
 
 logfile = open("image_without_exif.txt", "w")
 
