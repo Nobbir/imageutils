@@ -12,6 +12,9 @@ from PIL import ImageChops
 from PIL import Image
 from PIL import ImageStat
 
+# parseDateTime method moved to image_utitlities
+from image_utilities import *
+
 """
 datetime.fromtimestamp(time_stamp)  -- example return: datetime.datetime(2016, 8, 3, 9, 56, 52, 43531)
 os.path.getmtime() and getctime returns a double (timestamp) which can be converted to a datetime object as
