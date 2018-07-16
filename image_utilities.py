@@ -34,7 +34,26 @@ camera_dict = {u'Apple': 'iPhone', u'EASTMAN KODAK COMPANY': 'Kodak', u'NIKON CO
                u'PENTAX': 'Other', u'Panasonic': 'Other'}
 
 
+def compareImages(test_files):
+    """
+    i = 0
+    for dirs, folders, files in os.walk(root):
+        #print(dirs)
+        if folder in dirs.split(os.sep):
+            test_files = [os.path.join(dirs, f) for f in files]
+            if i == 0:
+                base_files = test_files[:]
+            else: # i > 0
+                compareImages(test_files)
+            i += 1
+    """
+    for file1 in base_files:
+        for file2 in test_files:
+            if filecmp.cmp(file1, file2, 0):
+                print(file1)
+                break
 
+            
 # input '2016:08:01 22:12:20'
 # output: a tuple of 6 numbers
 def parseDateTime(dt_string):
