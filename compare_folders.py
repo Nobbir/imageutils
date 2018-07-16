@@ -4,8 +4,19 @@ import filecmp
 root1 = r'F:\MyPython\CompareOrganizeImage'
 root2 = r'C:\MyPython\CompareOrganizeImage'
 
-import os
-    
+"""
+#You need to call os.path.realpath on __file__, 
+#so that when __file__ is a filename without the path you still get the dir path
+"""
+
+root_drive = os.path.dirname(os.path.realpath(__file__))
+
+# this is very simple approach
+dir_cmp = filecmp.dircmp(root1, root2)
+
+lefts = dir_cmp.left_only
+rights = dir_cmp.right_only
+
 for dirs1, folders1, files1 in os.walk(root1):
     
     for dirs2, folders2, files2 in os.walk(root2):
@@ -31,10 +42,5 @@ for dirs1, folders1, files1 in os.walk(root1):
                             print("{}\n{}".format(f1, f2))
                 else:
                     pass
-                    
-#dir_cmp = filecmp.dircmp(root1, root2)
-
-#lefts = dir_cmp.left_only
-#rights = dir_cmp.right_only
 
 print('done')
