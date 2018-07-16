@@ -5,7 +5,7 @@ import filecmp
 from datetime import datetime
 from PIL import Image
 from PIL.ExifTags import TAGS
-
+from image_utilities import * # CHECK SYNTAX 7/15/18
 
 
 def ValidateImageName(image_name):
@@ -13,9 +13,6 @@ def ValidateImageName(image_name):
         return False
     else:
         return True
-
-
-#img = r"C:\Users\farnf\Pictures\2016-06\DSC_0002xx.JPG"
 
 def listAllImages(root):
 
