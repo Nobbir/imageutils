@@ -6,25 +6,7 @@ from datetime import datetime
 from PIL import Image
 from PIL.ExifTags import TAGS
 
-exif_keys = ['LightSource', 'YResolution', 'ResolutionUnit', 'FlashPixVersion',
-             'Make', 'Flash', 'SceneCaptureType', 'DateTime', 'MeteringMode',
-             'XResolution', 'Contrast', 'Saturation', 'MakerNote', 'ExposureProgram',
-             'ColorSpace', 'ExifImageWidth', 'FocalLengthIn35mmFilm',
-             'ExposureBiasValue', 'DateTimeOriginal', 'UserComment',
-             'SceneType', 'Software', 'SubjectDistanceRange', 'WhiteBalance',
-             'CompressedBitsPerPixel', 'DateTimeDigitized', 'SensingMethod',
-             'FNumber', 'CustomRendered', 'FocalLength', 'SubsecTimeOriginal',
-             'ExposureMode', 'ComponentsConfiguration', 'ExifOffset',
-             'ExifImageHeight', 'SubsecTimeDigitized', 'ISOSpeedRatings',
-             'Model', 'Orientation', 'ExposureTime', 'FileSource', 'SubsecTime',
-             'MaxApertureValue', 'ExifInteroperabilityOffset', 'CFAPattern',
-             'Sharpness', 'GainControl', 'YCbCrPositioning', 'DigitalZoomRatio',
-             'ExifVersion']
 
-# simplified names of Cameras
-camera_dict = {u'Apple': 'iPhone', u'EASTMAN KODAK COMPANY': 'Kodak', u'NIKON CORPORATION': 'Nikon', 
-               u'Canon': 'Canon', u'SONY': 'Sony', u'Nokia': 'Other', u'LGE': 'Other', 
-               u'PENTAX': 'Other', u'Panasonic': 'Other'}
 
 def ValidateImageName(image_name):
     if "?" in image_name:

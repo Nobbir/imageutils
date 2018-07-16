@@ -8,11 +8,32 @@ from PIL import ImageChops
 from PIL import Image
 from PIL import ImageStat
 
-
 exif_tags = ['CompressedBitsPerPixel', 'DateTimeOriginal', 'DateTimeDigitized', 'MaxApertureValue', 'MeteringMode',
              'LightSource', 'FocalLength', 'ExifImageWidth', 'Make', 'Model', 'SubsecTimeOriginal', 'Orientation',
              'YCbCrPositioning', 'SensingMethod', 'XResolution', 'YResolution', 'ExposureTime', 'ISOSpeedRatings',
              'FNumber', 'DateTime', 'ExifImageHeight']
+
+exif_keys = ['LightSource', 'YResolution', 'ResolutionUnit', 'FlashPixVersion',
+             'Make', 'Flash', 'SceneCaptureType', 'DateTime', 'MeteringMode',
+             'XResolution', 'Contrast', 'Saturation', 'MakerNote', 'ExposureProgram',
+             'ColorSpace', 'ExifImageWidth', 'FocalLengthIn35mmFilm',
+             'ExposureBiasValue', 'DateTimeOriginal', 'UserComment',
+             'SceneType', 'Software', 'SubjectDistanceRange', 'WhiteBalance',
+             'CompressedBitsPerPixel', 'DateTimeDigitized', 'SensingMethod',
+             'FNumber', 'CustomRendered', 'FocalLength', 'SubsecTimeOriginal',
+             'ExposureMode', 'ComponentsConfiguration', 'ExifOffset',
+             'ExifImageHeight', 'SubsecTimeDigitized', 'ISOSpeedRatings',
+             'Model', 'Orientation', 'ExposureTime', 'FileSource', 'SubsecTime',
+             'MaxApertureValue', 'ExifInteroperabilityOffset', 'CFAPattern',
+             'Sharpness', 'GainControl', 'YCbCrPositioning', 'DigitalZoomRatio',
+             'ExifVersion']
+
+# simplified names of Cameras
+camera_dict = {u'Apple': 'iPhone', u'EASTMAN KODAK COMPANY': 'Kodak', u'NIKON CORPORATION': 'Nikon', 
+               u'Canon': 'Canon', u'SONY': 'Sony', u'Nokia': 'Other', u'LGE': 'Other', 
+               u'PENTAX': 'Other', u'Panasonic': 'Other'}
+
+
 
 # input '2016:08:01 22:12:20'
 # output: a tuple of 6 numbers
