@@ -32,6 +32,15 @@ def ValidateImageName(image_name):
     else:
         return True
 
+# an image is provided
+def getExif(img):
+    ret = {}
+    info = img._getexif()
+    for tag, value in info.items():
+        decoded = TAGS.get(tag, value)
+        ret[decoded] = value
+    return ret
+
 
 # image path is provided
 def get_exif(img_path):
@@ -51,6 +60,7 @@ def get_exif(img_path):
         print("Image {} does not have any exif".format(img_path))
         return  None, None # None
 
+
 def listAllImages(root):
 
     image_count = 0
@@ -63,13 +73,12 @@ def listAllImages(root):
     
     for root_folder, folders, files in os.walk(root):
         
-        for f in files:
+        for image_name in files:
             
-            if not ValidateImageName(f):   #f = lambda s: True if not "?" in s else False
-                print("Name {} is not valid".format(f))
+            if "?" in image_name:
                 continue
             
-            file_path = os.path.join(root_folder, f)   # f is file name, e.g., AM234.jpg
+            file_path = os.path.join(root_folder, image_name)   # f is file name, e.g., AM234.jpg
             ext = os.path.splitext(file_path)[1].lower()
 
             if ext in [".nef", ".db", ".psd", ".modd", ".moff", ".thm", ".py", ".lnk"]:
@@ -83,15 +92,15 @@ def listAllImages(root):
             try:
                 
                 exif, im = get_exif(file_path)
-
+    
                 if exif:
-
-                    camera = camera_dict[exif['Make']]    
-                    #camera_model = camera_dict[exif['Model']]  # e.g., Nikon D60
-                    # u'Apple', u'EASTMAN KODAK COMPANY', u'NIKON CORPORATION', u'Nokia', u'PENTAX', u'SONY', u'Panasonic', u'Canon', u'LGE'
-                    if not camera in cameras:
-                        cameras.append(camera)
-
+                    if 'Make' in exif.keys():
+                        camera = camera_dict[exif['Make']]    
+                        #camera_model = camera_dict[exif['Model']]  # e.g., Nikon D60
+                        # u'Apple', u'EASTMAN KODAK COMPANY', u'NIKON CORPORATION', u'Nokia', u'PENTAX', u'SONY', u'Panasonic', u'Canon', u'LGE'
+                        if not camera in cameras:
+                            cameras.append(camera)
+    
                     # ExifImageWidth, ExifImageHeight  
                     date_time_org = datetime.strptime(exif['DateTimeOriginal'], "%Y:%m:%d %H:%M:%S")
                     date_time_taken = datetime.strptime(exif['DateTime'], "%Y:%m:%d %H:%M:%S")
@@ -104,12 +113,12 @@ def listAllImages(root):
                     else:
                         images_dict[date_time_taken] = [file_path]                    
                     exif_count += 1
-                        
+                    
             except Exception as ex:
                 
-                if ext in [".jpg", ".jpeg", ".png"]:  # these are images without Exif info
+                if ext in [".jpg", ".jpeg", ".png", ".gif"]:  # these are images without Exif info
                     non_exif_count += 1
-                    modifiedtime = datetime.fromtimestamp(os.path.getmtime(file_path))   # returns a DateTime object
+                    modifiedtime = datetime.fromtimestamp(os.path.getmtime(file_path)) # returns a DateTime object
                     #print("NOT exif {}".format((type(modifiedtime))))
                     #images_dict[file_path] = modifiedtime
                     if modifiedtime in images_dict.keys():
@@ -155,8 +164,6 @@ def listAllImages(root):
     #ordered_dict = collections.OrderedDict(sorted(images_dict.items()))
     #for k, v in ordered_dict.items():
         #print("{} : {}".format(k, v))
-
-
         
     """
     >>> x
@@ -165,42 +172,20 @@ def listAllImages(root):
     >>> v
     Counter({2: 3, 5: 3, 1: 1, 3: 1, 6: 1, 7: 1, 8: 1, 9: 1})
     """  
-##    for k, v in images_dict.items():
-##        print("{} : {}".format(k, v))
-##    print(cameras)
-##    print(exif_count)
-##    print(non_exif_count)
-##    print(modified_count)
-                    
-    
     
 if __name__ == '__main__':
     """
     Searching Python list of dictionaries: http://stackoverflow.com/questions/8653516/python-list-of-dictionaries-search
     user generator expression : https://www.python.org/dev/peps/pep-0289/
-    >>> dicts = [
-    ...     { "name": "Tom", "age": 10 },
-    ...     { "name": "Mark", "age": 5 },
-    ...     { "name": "Pam", "age": 7 },
-    ...     { "name": "Dick", "age": 12 }
-    ... ]
-    
-    >>> (item for item in dicts if item["name"] == "Pam").next()
-    {'age': 7, 'name': 'Pam'}
-    
     """
-
-    onedrive_fuji = r"C:\Users\farnf\OneDrive\Pictures\FromFujiCamera"
-    root = r"C:\temp"
-    twok_07 = r"C:\Users\farnf\Pictures\2016-06"
-    root = r"D:\DCIM\101_FUJI"
-    root = r"C:\Users\nobi4775\Pictures\NikonD60_2"
-    root = r"C:\Users\nobi4775\Pictures"
-    root = r"C:\Users\farnf\Pictures"
-    root = r"C:\Users\nobi4775\Pictures\NikonD60_2"
+    # THIS IS THE WAY ///////////////////////////
+    import PIL.ExifTags
+    x = r"C:\Users\nobi4775\Pictures\MinecraftCake\gallery_hero.jpg"
+    x = r"C:\Users\nobi4775\Pictures\IMG_8434\IMG_8434.JPG"
+    x = r"C:\Users\nobi4775\Pictures\exif.jpg"
+    x = r'C:\Users\nobi4775\Documents\GitHub\imageutils\AllImageScripts\CompareOrganizeImage\Exif\samples\PictureXYs 001.jpg'
+    x = r'C:\Users\nobi4775\Documents\GitHub\imageutils\AllImageScripts\CompareOrganizeImage\Exif\ResizeImages\destFolder\Fabian_001.jpg'
     
-    #listAllImages(r"C:\Users\farnf\Pictures\2016-06")
-
     img = Image.open(x)
     exif = {
         PIL.ExifTags.TAGS[k]: v
