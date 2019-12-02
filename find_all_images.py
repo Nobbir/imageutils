@@ -72,10 +72,7 @@ def listAllImages(root):
             file_path = os.path.join(root_folder, f)   # f is file name, e.g., AM234.jpg
             ext = os.path.splitext(file_path)[1].lower()
 
-            if ext in [".nef", ".db", ".psd", ".modd", ".moff", ".thm", ".py", ".lnk"]:
-                continue
-            
-            if ext in [".avi", ".mov", ".mpeg", ".mpg", ".mp4"]:
+            if ext in [".nef", ".db", ".psd", ".modd", ".moff", ".thm", ".py", ".lnk"] or ext in [".avi", ".mov", ".mpeg", ".mpg", ".mp4"]:
                 #consider only images for now - videos later   
                 continue
             
