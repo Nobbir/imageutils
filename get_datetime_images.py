@@ -1,6 +1,8 @@
 import os
 import sys
 import filecmp
+import hashlib
+
 from datetime import datetime
 from PIL import Image
 from PIL.ExifTags import TAGS
@@ -48,12 +50,20 @@ def get_exif(img_path):
         # use os.stat(image_path) to get time info
         return
         
-        
+def get_hash(in_str):
+    
+    md5_hash = hashlib.md5()
+    md5_hash.update(in_str.encode())
+    
+    encoded_val = md5_hash.hexdigest()
+    
+    return encoded_val
+
 def listAllImages(root):
     
     try:
         #root = r"G:\Pictures" #\house_redlands\verona drive"
-        root = r"C:\temp"
+        root = r"C:\temp\imagetest"
         image_count = 0
         video_count = 0
         
@@ -92,7 +102,8 @@ def listAllImages(root):
                     ext = os.path.splitext(file_path)[1].lower()
                     if ext in [".jpg", ".jpeg", ".png"]:
                         modifiedtime = datetime.fromtimestamp(os.path.getmtime(file_path))
-                        print("{}: {}".format(file_path, modifiedtime))
+                        #print("{}: {}".format(file_path, modifiedtime))
+                        print("DateTaken - {} and Make - {}".format(exif['DateTime'], exif['Make']))
                     else:
                         print("NOT AN IMAGE: {}".format(file_path))
                         
@@ -113,6 +124,7 @@ if __name__ == '__main__':
     root = r"C:\temp"
     root = r"C:\Users\farnf\Pictures\2016-07"
     root = r"D:\DCIM\101_FUJI"
+    root = r"C:\Users\nobi4775\Pictures\ameliapp"
     listAllImages(root)
     #try:
         #root = r"G:\Pictures" #\house_redlands\verona drive"
