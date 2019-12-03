@@ -63,7 +63,7 @@ def listAllImages(root):
     
     try:
         #root = r"G:\Pictures" #\house_redlands\verona drive"
-        root = r"C:\temp\imagetest"
+        
         image_count = 0
         video_count = 0
         
@@ -86,32 +86,29 @@ def listAllImages(root):
                     exif = getExif(img)
 
                     if exif:
-                        #print("Date time original - {} : {}".format(f, exif['DateTimeOriginal']))
-                        #print("Date Taken - {} : {}".format(f, exif['DateTime']))  # WRONG WRONG
-                        print("DateTaken - {} and Make - {}".format(exif['DateTime'], exif['Make']))
+
+                        dt_hash = get_hash("DateTaken - {} and Make - {}".format(exif['DateTime'], exif['Make']))
+                        print(dt_hash)
                     else:
                         # look for os.stat time information
-                        modifiedtime = datetime.fromtimestamp(os.path.getmtime(file_path))
-                        if modifiedtime:
+                        exif_modifiedtime = datetime.fromtimestamp(os.path.getmtime(file_path))   # eg: 1498853212.5415404
+                        if exif_modifiedtime:
                             image_count += 1
-                            print("Modified time: ", modifiedtime.year, modifiedtime.month, modifiedtime.day)
+                            print("Modified time: ", exif_modifiedtime.year, exif_modifiedtime.month, exif_modifiedtime.day)
                         else:
                             print("{} has no timestamp")
                             
                 except Exception as ex0:
                     ext = os.path.splitext(file_path)[1].lower()
                     if ext in [".jpg", ".jpeg", ".png"]:
-                        modifiedtime = datetime.fromtimestamp(os.path.getmtime(file_path))
-                        #print("{}: {}".format(file_path, modifiedtime))
-                        print("DateTaken - {} and Make - {}".format(exif['DateTime'], exif['Make']))
+                        os_path_modifiedtime = datetime.fromtimestamp(os.path.getmtime(file_path))
+                        print("{}: {}".format(file_path, os_path_modifiedtime))
+                        #print("DateTaken - {} and Make - {}".format(exif['DateTime'], exif['Make']))
                     else:
                         print("NOT AN IMAGE: {}".format(file_path))
                         
                 except Exception as ex:
                     print(ex.args[0])
-                       
-        #print("{} : is total number of images.".format(image_count))
-        #print("{} : is total number of videos.".format(video_count))  
 
     except Exception as ex:
         print(ex.args[0])
@@ -125,6 +122,8 @@ if __name__ == '__main__':
     root = r"C:\Users\farnf\Pictures\2016-07"
     root = r"D:\DCIM\101_FUJI"
     root = r"C:\Users\nobi4775\Pictures\ameliapp"
+    root = r"C:\temp\imagetest"
+    root = r"C:\Users\nobi4775\Pictures\MinecraftCake"
     listAllImages(root)
     #try:
         #root = r"G:\Pictures" #\house_redlands\verona drive"
