@@ -9,6 +9,7 @@ from PIL import Image
 from PIL import ImageStat
 import hashlib
 
+# Fabian started learning github
 # this long value
 # or the concatenated string value
 # could be used as Hash 
